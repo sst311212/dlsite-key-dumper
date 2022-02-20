@@ -42,11 +42,12 @@ def main():
             return
 
     dlsite_kts.add_package_svckey(p, DLSITE_SERVICE_KEY)
-    p.key = subprocess.run(
-        [resource_path("dlsite-key-dumper.exe"), str(pid)],
-        input=p.iv,
+    p.key = bytes.fromhex(subprocess.run(
+        [resource_path("dlstKeyDumper.exe"), str(pid)],
+        input=p.iv.hex(),
         capture_output=True,
-    ).stdout[0:16]
+        universal_newlines=True,
+    ).stdout)
 
     print(p.iv.hex(), p.key.hex())
 
