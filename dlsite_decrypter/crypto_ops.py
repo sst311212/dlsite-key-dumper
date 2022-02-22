@@ -80,7 +80,8 @@ def decrypt_file_from_bytes(content, key, initiv):
     final_segment = content[p : p + remaining]
     final_iv = next(ivs)
     if remaining < 17:
-        decrypted.append(decrypt_cfb(key, final_iv, final_segment))
+        final_iv = next(ivs)
+        decrypted.append(strxor.strxor(final_segment, final_iv[:remaining]))
     else:
         if remaining % 16 == 0:
             decrypted.append(decrypt_cbc(key, final_iv, final_segment))
